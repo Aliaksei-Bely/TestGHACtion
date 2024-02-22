@@ -1,0 +1,36 @@
+name: PR File Content Sender
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - main  # Change to your default branch name if different
+
+jobs:
+  send-file-content:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '3.1'  # Adjust based on your project's requirements
+
+      - name: Send File Content to API
+        run: |
+          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
+            content=$(cat $file | tr '\n' ' ' | base64)
+            request_body="{\"filename\": \"$file\", \"content\": \"$content\"}"
+            echo "API Request Body for $file: $request_body"
+            response=$(curl -X POST -H "Content-Type: application/json" -d "$request_body" https://aliakseibely.bsite.net/ReviewService/Review)
+            echo "API Response for $file: $response"
+            sleep 120  # Wait for 2 minutes
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
