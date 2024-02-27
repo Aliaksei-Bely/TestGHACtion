@@ -1,40 +1,23 @@
-name: PR File Content Sender
+name: PR File Content Base64 Logger
 
 on:
   pull_request:
     types:
       - opened
-      - synchronize
-  push:
-    branches:
-      - main  # Change to your default branch name if different
 
 jobs:
-  send-file-content:
+  log-pr-files-content:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '3.1'  # Adjust based on your project's requirements
-
-  process-last-commit-changes:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout (fetch last two commits) of the PR
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 2
-      - name: Process files changed in the current commit
-        run: |
-          changedFiles=$(git diff --name-only HEAD^)
-          for file in $changedFiles; do
-            echo "Processing file: $file"
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Log PR files content
+      run: |
+        for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
+          echo "Processing file: $file"
+          content=$(cat $file | base64)
+          echo "Base64 content of $file:"
+          echo "$content"
+        done
