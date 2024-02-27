@@ -27,9 +27,10 @@ jobs:
           for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
             content=$(cat $file | tr '\n' ' ' | base64)
             request_body="{\"filename\": \"$file\", \"content\": \"$content\"}"
-            echo "API Request Body for $file: $request_body"
+            echo "Processing file: $file"
+            echo "API Request Body: $request_body"
             response=$(curl -X POST -H "Content-Type: application/json" -d "$request_body" https://aliakseibely.bsite.net/ReviewService/Review)
-            echo "API Response for $file: $response"
+            echo "API Response: $response"
             sleep 120  # Wait for 2 minutes
           done
         env:
