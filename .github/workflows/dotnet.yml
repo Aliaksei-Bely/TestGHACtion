@@ -18,9 +18,6 @@ jobs:
       with:
         dotnet-version: '8.0'  # Choose the version that suits your app
 
-    - name: Build Console App
-      run: dotnet build -c Release
-
     - name: Run Console App
       run: dotnet Demo ${{ github.repository }} ${{ github.event.number }} ${{ secrets.CLIENT_SECRET }}
       env:
