@@ -1,7 +1,6 @@
 name: Run Console App on PR Creation
 
 on:
-  workflow_run: 
   pull_request:
     types:
       - opened
