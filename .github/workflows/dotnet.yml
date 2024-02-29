@@ -1,4 +1,4 @@
-name: PR File Content Base64 Logger
+name: Run Console App on PR Creation
 
 on:
   pull_request:
@@ -6,21 +6,22 @@ on:
       - opened
 
 jobs:
-  log-pr-files-content:
+  run-console-app:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Env
-      run: env
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0'  # Choose the version that suits your app
 
-    - name: Log PR files content
-      run: |
-        for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
-          echo "Processing file: $file"
-          content=$(cat $file | base64)
-          echo "Base64 content of $file:"
-          echo "$content"
-        done
+    - name: Build Console App
+      run: dotnet build -c Release
+
+    - name: Run Console App
+      run: dotnet Demo ${{ github.repository }} ${{ github.event.number }} ${{ secrets.CLIENT_SECRET }}
+      env:
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
