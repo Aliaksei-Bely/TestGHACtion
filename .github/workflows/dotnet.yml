@@ -28,6 +28,6 @@ jobs:
         dotnet-version: '8.0'  # Choose the version that suits your app
 
     - name: Run Console App
-      run: chmod +x ./Demo && ./Demo ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} ${{ secrets.SERVER_ADDRESS }}
+      run: chmod +x ./Demo && ./Demo ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} http://212.98.190.23:5001
       env:
         REPO_ACCESS_SECRET: ${{ secrets.REPO_ACCESS_SECRET }}
