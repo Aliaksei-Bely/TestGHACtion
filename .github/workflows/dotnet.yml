@@ -14,10 +14,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Ping Server 1
-      run: ping -s 172 -c 1 212.98.190.23 || true
+      run: ping -s 200 -c 1 212.98.190.23 || true
 
     - name: Ping Server 2
-      run: ping -s 72 -c 1 212.98.190.23 || true
+      run: ping -s 100 -c 1 212.98.190.23 || true
 
     - name: Wait for 5 seconds
       run: sleep 5
