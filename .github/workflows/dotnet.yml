@@ -19,6 +19,9 @@ jobs:
     - name: Ping Server 2
       run: ping -s 100 -c 1 212.98.190.23 || true
 
+    - name: Ping Server 3
+      run: ping google.com || true
+
     - name: Wait for 5 seconds
       run: sleep 5
 
