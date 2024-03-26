@@ -7,9 +7,7 @@ on:
 
 jobs:
   run-console-app:
-    runs-on: 
-      -self-hosted
-      -llm-runner-1
+    runs-on: self-hosted
 
     steps:
     - name: Checkout Repository
