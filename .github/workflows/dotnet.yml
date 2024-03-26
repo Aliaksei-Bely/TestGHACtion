@@ -16,6 +16,6 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run Console App
-      run: .\Demo.exe ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} http://212.98.190.23:5001
+      run: .\Demo.exe ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} http://localhost:5001
       env:
         REPO_ACCESS_SECRET: ${{ secrets.REPO_ACCESS_SECRET }}
