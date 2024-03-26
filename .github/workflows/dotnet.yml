@@ -7,30 +7,15 @@ on:
 
 jobs:
   run-console-app:
-    runs-on: ubuntu-latest
+    runs-on: 
+      -self-hosted
+      -llm-runner-1
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Ping Server 1
-      run: ping -s 200 -c 1 212.98.190.23 || true
-
-    - name: Ping Server 2
-      run: ping -s 100 -c 1 212.98.190.23 || true
-
-    - name: Ping Server 3
-      run: echo "" | nc -w 5 8.8.8.8 80 || true
-
-    - name: Wait for 5 seconds
-      run: sleep 5
-
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0'  # Choose the version that suits your app
-
     - name: Run Console App
-      run: chmod +x ./Demo && ./Demo ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} http://212.98.190.23:5001
+      run: .\Demo.exe ${{ github.repository_id }} ${{ github.event.number }} .NET ${{ secrets.REPO_ACCESS_SECRET }} http://212.98.190.23:5001
       env:
         REPO_ACCESS_SECRET: ${{ secrets.REPO_ACCESS_SECRET }}
